@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Header</title>
+  <link rel="stylesheet" href="/styles/header.css">
+  
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <nav class="navbar">
+      <div class="logo">
+        <a href="/"><img src="/images/logo.png" alt="Unreleased Beats Logo"></a>
+      </div>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/promotion">Promotion</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropbtn">Categories</a>
+          <div class="dropdown-content">
+            <a href="/categories/edm">EDM</a>
+            <a href="/categories/bollywood">Bollywood</a>
+            <a href="/categories/circuit">Circuit</a>
+            <a href="/categories/marathi">Marathi</a>
+            <a href="/categories/soundcheck">Soundcheck</a>
+            <a href="/categories/house">House</a>
+          </div>
+        </li>
+        <li><a href="/about-us">About Us</a></li>
+        <li><a href="/contact-us">Contact Us</a></li>
+        <li><a href="/adminLogin">Admin Section</a></li>
+      </ul>
+      <div class="hamburger" id="hamburger">
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </nav>
+  </header>
+
+  <script>
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('nav-links');
+
+    hamburger.addEventListener('click', () => {
+      navLinks.classList.toggle('open');
+      hamburger.classList.toggle('toggle');
+    });
+  </script>
+
+</body>
+
+</html>

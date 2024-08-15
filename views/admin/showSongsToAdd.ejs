@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Song to album</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/styles/admin/addSong.css">
+</head>
+
+
+<body class="jb-mono">
+    <h1>Add Song To <%= album_name%>
+            <div class="songs-container">
+    </h1>
+    <% if (allSongs && allSongs.length> 0) { %>
+        <% allSongs.forEach(function(song) { %>
+
+            <div class="song-card">
+                <img src="/images/thumbnail.png" alt="logo">
+
+                <h3>
+                    <%= song.song_title %>
+                </h3>
+
+            <p>
+                    <%= song.category %>
+                </p>
+
+                <!-- <a href="/admin/submit-song-to-album/<%= album_id %>" class="button">Add</a> -->
+                <a href="/admin/submit-song-to-album/<%= album_id %>?songID=<%= song.id %>" class="button">Add</a>
+
+            </div>
+
+            <% }); %>
+                <% } else { %>
+                    <p>No songs found.</p>
+                    <% } %>
+                        </div>
+
+
+</body>
+
+</html>

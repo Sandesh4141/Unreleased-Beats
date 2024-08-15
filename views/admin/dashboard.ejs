@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="/styles/admin/dashboard.css">
+    <style>
+        .card {
+            padding: 20px;
+            margin-bottom: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            position: relative;
+        }
+
+        .card h3 {
+            margin-bottom: 10px;
+            font-size: 20px;
+            color: #333;
+        }
+
+        .card p {
+            font-size: 18px;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .card button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .card button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+  
+    <div class="sidebar">
+        <a href="/admin/dashboard" class="active">Dashboard</a>
+        
+        <div class="dropdown">
+            <button class="dropdown-btn">Manage Songs</button>
+            <div class="dropdown-content">
+                <a href="/admin/add-song">Add New Song</a>
+                <a href="/admin/delete-song">Delete Song</a>
+                <a href="/admin/edit-song">Edit Song</a>
+            </div>
+        </div>
+
+        <div class="dropdown">
+            <button class="dropdown-btn">Manage Albums</button>
+            <div class="dropdown-content">
+                <a href="/admin/add-album">Add New Album</a>
+                <a href="/admin/delete-album">Delete Album</a>
+                <a href="/admin/edit-album">Edit Album</a>
+            </div>
+        </div>
+
+        <a href="/admin/manage-promotion">Manage Promotion</a>
+        <a href="/admin/settings">Settings</a>
+        <a href="/">Go To Home</a>
+    </div>
+
+    <div class="main-content">
+        <div class="header">
+            <h1>Admin Dashboard</h1>
+            <a href="/logout" class="logout">Logout</a>
+        </div>
+
+        <!-- Success Alert -->
+
+        <div class="dashboard-section">
+            <div class="card">
+                <h3>Total Songs</h3>
+                <p><%= totalSongs %></p>
+                <button onclick="window.location.href='/admin/view-songs'">View All Songs</button>
+            </div>
+            <div class="card">
+                <h3>Total Albums</h3>
+                <p><%= totalAlbums %></p>
+                <button onclick="window.location.href='/admin/view-albums'">View All Albums</button>
+            </div>
+            <div class="card">
+                <h3>Total Pending Approvals</h3>
+                <p><%= pendingApprovals %></p>
+                <button onclick="window.location.href='/admin/view-pending-approvals'">View Pending Approvals</button>
+            </div>
+            <div class="card">
+                <h3>Total Inquiries/Questions</h3>
+                <p><%= totalQuestions %></p>
+                <button onclick="window.location.href='/admin/view-pending-questions'">View Pending Questions</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Script to handle dropdown functionality
+        document.querySelectorAll('.dropdown-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const dropdown = button.parentElement;
+                dropdown.classList.toggle('active');
+            });
+        });
+    </script>
+</body>
+</html>
