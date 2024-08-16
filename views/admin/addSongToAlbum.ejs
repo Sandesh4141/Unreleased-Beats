@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Songs to Album</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100..800&family=Montserrat:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles/style.css">
+</head>
+
+<style>
+    body {
+        font-family: 'JetBrains Mono', monospace;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
+
+    .songs-container {
+        width: 90%;
+        max-width: 1200px;
+        margin: 20px auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    .song-list {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .song-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .song-item:last-child {
+        border-bottom: none;
+    }
+
+    .song-title {
+        font-size: 1.2rem;
+        color: #333;
+    }
+
+    .song-artist {
+        font-size: 1rem;
+        color: #666;
+    }
+
+    .add-song-form {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .add-song-button {
+        background-color: #ff4d4d;
+        color: #fff;
+        padding: 10px 20px;
+        text-decoration: none;
+        border-radius: 4px;
+        font-size: 1rem;
+        transition: background-color 0.2s;
+        border: none;
+        cursor: pointer;
+    }
+
+    .add-song-button:hover {
+        background-color: #e60000;
+    }
+
+    @media (max-width: 768px) {
+        .song-title {
+            font-size: 1rem;
+        }
+
+        .song-artist {
+            font-size: 0.9rem;
+        }
+
+        .add-song-button {
+            padding: 8px 16px;
+            font-size: 0.9rem;
+        }
+    }
+</style>
+
+<body>
+    <div class="songs-container">
+        <h1>Add Songs to <%=album_name%></h1>
+
+        <form action="/admin/album/<%= albumId %>/add-songs" method="POST">
+            <ul class="song-list">
+                <% if (songs && songs.length > 0) { %>
+                    <% songs.forEach(function(song) { %>
+                        <li class="song-item">
+                            <div>
+                                <span class="song-title"><%= song.song_title %></span> - 
+                                <span class="song-artist"><%= song.artist %></span>
+                            </div>
+                            <input type="checkbox" name="songIds[]" value="<%= song.id %>">
+                        </li>
+                    <% }); %>
+                <% } else { %>
+                    <li>No songs available to add.</li>
+                <% } %>
+            </ul>
+            <div class="add-song-form">
+                <button type="submit" class="add-song-button">Add Selected Songs to Album</button>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>

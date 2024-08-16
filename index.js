@@ -456,7 +456,7 @@ app.get("/admin/edit-album",async (req,res)=>{
 
 })
 
-app.post("/admin/edit-album/:id", async(req,res)=>{
+app.get("/admin/edit-album/:id", async(req,res)=>{
     let editID = req.params.id;
     let result = db.query("SELECT * FROM albums WHERE album_id=$1", [editID]);
     let album = (await result).rows[0];
@@ -472,6 +472,7 @@ app.post("/admin/submit-edit-album/:id", async(req,res)=>{
     let title = req.body.title;
     let artist = req.body.artist;
     let releaseDate = req.body.releaseDate;
+    console.log(releaseDate);
     let category = req.body.category;
     // console.log(id, title, artist,releaseDate, category);
     try {
@@ -482,19 +483,69 @@ app.post("/admin/submit-edit-album/:id", async(req,res)=>{
             [title, artist, releaseDate, category, id]
         );
         req.session.success = 'Album updated successfully!';
-        res.redirect("/admin/edit-album"); // Redirect to the edit album page or any other appropriate page
+        res.send(` <html>
+                    <body>
+                        <script>
+                            alert("Album Updated Successfully....");
+                            window.location.href = "/admin/dashboard"; // Redirect to the home page
+                        </script>
+                    </body>
+                </html>`); // Redirect to the edit album page or any other appropriate page
     } catch (error) {
         console.error('Error updating album:', error);
         req.session.error = 'There was an error updating the album.';
-        res.redirect("/admin/edit-album"); // Redirect back to the edit album page
+        res.send('"/admin/edit-album"'); // Redirect back to the edit album page
     }
 })
 
 
 // add song to album - 
+app.get('/admin/album/:albumId/add-song', async (req, res) => {
+    const { albumId } = req.params;
+    const album = await db.query("SELECT * FROM albums WHERE album_id = $1",[albumId]);
+    const album_name = album.rows[0].title;
+    const result = await db.query('SELECT * FROM songs WHERE album_id IS NULL '); // Songs not in any album
 
+    const songs = result.rows;
+
+    res.render('admin/addSongToAlbum', { albumId, songs, album_name });
+});
+
+
+app.post('/admin/album/:albumId/add-songs', async (req, res) => {
+    const { albumId } = req.params;
+    let songIds = req.body['songIds[]'];
+    // console.log(req.body['songIds[]']);
+    // console.log(songIds);
+   
+    try {
+        // Add each selected song to the album
+        for (const songId of songIds) {
+            await db.query('INSERT INTO album_songs (album_id, song_id) VALUES ($1, $2) ON CONFLICT (album_id, song_id) DO NOTHING', [albumId, songId]);
+        }
+        
+        // Redirect to the album edit page
+        // res.redirect('/admin/edit-album/' + albumId);
+        res.send(`
+                <html>
+                    <body>
+                        <script>
+                            alert("Songs Added To Album Successfully....");
+                            window.location.href = "/admin/dashboard"; // Redirect to the home page
+                        </script>
+                    </body>
+                </html>`);
+    } catch (error) {
+        console.error('Error adding songs to album:', error);
+        res.status(500).send('Internal Server Error');
+    }
+
+  
+});
 
 // ####################################################################################
+
+//   GET /admin/view-album
 
 
 

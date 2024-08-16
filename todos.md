@@ -36,3 +36,18 @@ csscLinking code : <link rel="stylesheet" href="/styles/admin/dashboard.css">
 UPDATE songs
 SET album_id = (SELECT id FROM albums WHERE title = 'Album Title')
 WHERE song_title = 'Song Title';
+
+
+todo: Resolve the array problem while adding songs to album : resolved
+
+
+
+                <html>
+                    <body>
+                        <script>
+                            alert("Album Deleted Successfully....");
+                            window.location.href = "/admin/dashboard"; // Redirect to the home page
+                        </script>
+                    </body>
+                </html>
+
