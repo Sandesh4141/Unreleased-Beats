@@ -546,8 +546,37 @@ app.post('/admin/album/:albumId/add-songs', async (req, res) => {
 // ####################################################################################
 
 //   GET /admin/view-album
+app.get("/admin/view-album", async (req,res)=>{
+    let result = await db.query("SELECT * FROM albums");
+    let allAlbums = result.rows;
+    
+    res.render("admin/viewAllAlbum.ejs", {allAlbums});
 
+})
 
+//  view specific album with all songs in it
+// GET /admin/view-album/15
+app.get("/admin/albums/viewAlbum/:id",async (req,res)=>{
+    console.log(req.params.id);
+    let albumID = req.params.id;
+   try {
+        const albumResult = await db.query("SELECT * FROM albums WHERE album_id = $1", [albumID]);
+        const album = albumResult.rows[0];
+
+        if (!album) {
+            return res.status(404).send('Album not found');
+        }
+
+        const songsResult = await db.query("SELECT * FROM songs WHERE id IN (SELECT song_id FROM album_songs WHERE album_id = $1)", [albumID]);
+        const songs = songsResult.rows;
+
+        res.render("admin/viewAlbum.ejs", { album, songs });
+    } catch (error) {
+        console.error('Error fetching album details:', error);
+        res.status(500).send('Internal Server Error');
+    }
+
+})
 
 // ----------------- about-us routes ----------------------------
 app.get('/about-us', (req, res) => {
