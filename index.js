@@ -578,6 +578,68 @@ app.get("/admin/albums/viewAlbum/:id",async (req,res)=>{
 
 })
 
+// delete song from album 
+// GET /admin/album/15/remove-song
+app.get("/admin/album/:id/remove-song/", async(req,res)=>{
+    let albumID = req.params.id;
+    try {
+        const albumResult = await db.query("SELECT * FROM albums WHERE album_id = $1", [albumID]);
+        const album = albumResult.rows[0];
+
+        if (!album) {
+            return res.status(404).send('Album not found');
+        }
+
+        const songsResult = await db.query("SELECT * FROM songs WHERE id IN (SELECT song_id FROM album_songs WHERE album_id = $1)", [albumID]);
+        const songs = songsResult.rows;
+
+        res.render("admin/viewAlbumToDeleteSongs.ejs", { album, songs });
+    } catch (error) {
+        console.error('Error fetching album details:', error);
+        res.status(500).send('Internal Server Error');
+    }
+
+})
+
+app.get("/admin/album/:albumID/removeSong/:songID", async(req,res)=>{
+    const { albumID, songID } = req.params;
+    try {
+        // Assuming you have a junction table like album_songs
+        // where you store the relationship between albums and songs
+
+        const result = await db.query(
+            "DELETE FROM album_songs WHERE album_id = $1 AND song_id = $2",
+            [albumID, songID]
+        );
+
+        if (result.rowCount > 0) {
+            // Success message
+            req.session.success = "Song removed from album successfully!";
+        } else {
+            // No rows were affected, likely because the song was not found in the album
+            req.session.error = "Song was not found in the album.";
+        }
+
+        // Redirect back to the album edit page or wherever you want
+        res.send(` <html>
+                    <body>
+                        <script>
+                            alert("Song Removed Successfully....");
+                            window.location.href = "/admin/dashboard"; // Redirect to the home page
+                        </script>
+                    </body>
+                </html>
+
+`);
+    } catch (error) {
+        console.error("Error removing song from album:", error);
+        req.session.error = "An error occurred while removing the song from the album.";
+        res.redirect(`/admin/album/${albumID}/edit`);
+    } 
+
+})
+
+
 // ----------------- about-us routes ----------------------------
 app.get('/about-us', (req, res) => {
     res.render("aboutUs.ejs");

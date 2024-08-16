@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Album Songs</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .album-container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+        }
+
+        .album-header {
+            text-align: center;
+            padding: 20px;
+            border-bottom: 2px solid #ddd;
+        }
+
+        .album-header img {
+            max-width: 150px;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .album-header h1 {
+            font-size: 2.5rem;
+            margin: 10px 0;
+            color: #333;
+        }
+
+        .album-header p {
+            font-size: 1.1rem;
+            color: #666;
+        }
+
+        .songs-container {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .song-card {
+            display: flex;
+            align-items: center;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            margin-bottom: 15px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+            overflow: hidden; /* Ensure content stays within bounds */
+        }
+
+        .song-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+        }
+
+        .song-card img {
+            max-width: 80px;
+            height: auto;
+            border-radius: 8px;
+            margin-right: 15px;
+        }
+
+        .song-card-content {
+            flex: 1;
+            overflow: hidden; /* Ensure text content doesn't overflow */
+        }
+
+        .song-card h3 {
+            font-size: 1.1rem; /* Reduced font size for better fit */
+            margin: 0;
+            color: #333;
+            white-space: normal; /* Allow wrapping */
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 1.4; /* Improve readability */
+        }
+
+        .song-card p {
+            margin: 5px 0;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .song-card .button {
+            background-color: #ff4d4d;
+            color: #fff;
+            padding: 8px 16px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            transition: background-color 0.2s, transform 0.2s;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .song-card .button:hover {
+            background-color: #e60000;
+            transform: scale(1.05);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .album-header img {
+                max-width: 120px;
+            }
+
+            .album-header h1 {
+                font-size: 2rem;
+            }
+
+            .album-header p {
+                font-size: 1rem;
+            }
+
+            .song-card {
+                padding: 10px;
+                flex-direction: column;
+                align-items: flex-start;
+                text-align: left;
+            }
+
+            .song-card img {
+                max-width: 60px;
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+
+            .song-card h3 {
+                font-size: 1rem;
+                white-space: normal; /* Allow wrapping on small screens */
+            }
+
+            .song-card p {
+                font-size: 0.8rem;
+            }
+
+            .song-card .button {
+                padding: 6px 12px;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="album-container">
+        <div class="album-header">
+            <img src="/images/thumbnail.png" alt="<%= album.title %> Cover">
+            <h1>Remove Songs From <%= album.title %></h1>
+            <p><strong>Artist:</strong> <%= album.artist %></p>
+            <p><strong>Release Date:</strong> <%= album.release_date %></p>
+        </div>
+        <ul class="songs-container">
+            <% if (songs && songs.length > 0) { %>
+                <% songs.forEach(function(song) { %>
+                    <li class="song-card">
+                        <img src="/images/thumbnail.png" alt="Thumbnail">
+                        <div class="song-card-content">
+                            <h3><%= song.song_title %></h3>
+                            <p><strong>Artist:</strong> <%= song.artist %></p>
+                            <p><strong>Category:</strong> <%= song.category %></p>
+                        </div>
+                        <a href="/play/<%=song.id%>" class="button">Play</a>
+                        <a href="/admin/album/<%=album.album_id%>/removeSong/<%=song.id%>" class="button">Remove Song</a>
+                    </li>
+                <% }); %>
+            <% } else { %>
+                <p>No songs found for this album.</p>
+            <% } %>
+        </ul>
+    </div>
+</body>
+
+</html>
