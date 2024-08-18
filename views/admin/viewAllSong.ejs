@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - View Songs</title>
+    <style>
+        /* Reset and Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f0f2f5;
+    color: #333;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #444;
+    margin-bottom: 40px;
+    font-weight: 500;
+}
+
+.song-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 0 10px;
+}
+
+.song-card {
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    border: none;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    color: #fff;
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.song-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.song-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #fff;
+    margin-bottom: 15px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.song-details {
+    font-size: 16px;
+    color: #ccc;
+    margin-bottom: 10px;
+    transition: color 0.3s ease;
+}
+
+.song-card:hover .song-details {
+    color: #fff;
+}
+
+.buttons {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.song-card:hover .buttons {
+    opacity: 1;
+}
+
+.action-btn {
+    display: inline-block;
+    padding: 12px 20px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    text-align: center;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 14px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    margin-top: 5px;
+    margin-right: 10px;
+}
+
+.action-btn:hover {
+    background-color: #d9534f;
+    transform: translateY(-3px);
+}
+
+/* Thumbnail image as background */
+.song-card {
+    background-image: url('/images/thumbnail.png');
+}
+.song-card {
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    border: none;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    color: #fff;
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    overflow: hidden;
+}
+
+.song-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('/images/thumbnail.png');
+    opacity: 1;
+    background-size: cover;
+    background-position: center;
+    opacity: 0.3; /* Adjust this value to control opacity */
+    z-index: 0;
+}
+
+.song-title, .song-details, .buttons {
+    position: relative;
+    z-index: 1; /* Ensure content is above the background image */
+}
+
+.song-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.song-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #fff;
+    margin-bottom: 15px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.song-details {
+    font-size: 16px;
+    color: #ccc;
+    margin-bottom: 10px;
+    transition: color 0.3s ease;
+}
+
+.song-card:hover .song-details {
+    color: #fff;
+}
+
+.buttons {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.song-card:hover .buttons {
+    opacity: 1;
+}
+
+.action-btn {
+    display: inline-block;
+    padding: 12px 20px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    text-align: center;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 14px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    margin-top: 5px;
+    margin-right: 10px;
+}
+
+.action-btn:hover {
+    background-color: #d9534f;
+    transform: translateY(-3px);
+}
+
+
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <h1>Admin - View Songs</h1>
+    <div class="song-grid">
+        <% songs.forEach(function(song) { %>
+            <div class="song-card">
+                <div class="song-title"><%= song.song_title %></div>
+                <div class="song-details">Artist: <%= song.artist %></div>
+                
+                <div class="song-details">Category: <%= song.category %></div>
+                <div class="buttons">
+                    <a href="/play/<%=song.id%>" class="action-btn">Play</a>
+                    <a href="/edit/<%=song.id%>" class="action-btn">Edit</a>
+                    <a href="/delete/<%=song.id%>" class="action-btn">Remove</a>
+                </div>
+            </div>
+
+        <% }); %>
+    </div>
+</body>
+</html>

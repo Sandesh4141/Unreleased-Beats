@@ -1,0 +1,121 @@
+<style>
+
+
+
+* {
+    font-family: "JetBrains Mono", monospace;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+.search-results {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.search-results h2 {
+    font-size: 28px;
+    margin-top: 40px;
+    margin-bottom: 30px;
+    text-align: center;
+    color: #2c3e50;
+}
+
+.search-results ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0 auto;
+}
+
+.search-results ul li {
+    background-color: #fff;
+    margin-bottom: 15px;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: background-color 0.3s ease;
+}
+
+.search-results ul li:hover {
+    background-color: #ecf0f1;
+}
+
+.search-results .song-details {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 20px;
+    color: #2c3e50;
+}
+
+.search-results .play-button {
+    background-color: #3498db;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    position: relative;
+}
+
+.search-results .play-button::before {
+    content: "";
+    position: absolute;
+    border: 8px solid transparent;
+    border-left: 12px solid #fff;
+    border-radius: 2px;
+    width: 0;
+    height: 0;
+    left: 10px;
+}
+
+.search-results .play-button:hover {
+    background-color: #2980b9;
+}
+
+.search-results .play-button span {
+    font-size: 0;
+}
+
+.search-results p {
+    text-align: center;
+    color: #7f8c8d;
+    font-size: 18px;
+    margin-top: 40px;
+}
+
+
+</style>
+
+<%- include("header.ejs") %>
+<div class="search-results">
+    <h2>Search Results</h2>
+    <% if (results.length > 0) { %>
+        <ul>
+            <% results.forEach(song => { %>
+                <li>
+                    <div class="song-details">
+                        <span><%= song.song_title %> by <%= song.artist %></span>
+                    </div>
+                    <a href="/play/<%= song.id %>" class="play-button"></a>
+                </li>
+            <% }) %>
+        </ul>
+    <% } else { %>
+        <p>No songs found matching your search criteria.</p>
+    <% } %>
+</div>

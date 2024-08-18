@@ -175,6 +175,24 @@ app.get("/download/:id", async (req, res) => {
 });
 
 
+// ------------------Song serach Route ----------------
+app.get('/search', async (req, res) => {
+    const searchQuery = req.query.query;
+
+    try {
+        const results = await db.query(`
+            SELECT * FROM songs 
+            WHERE song_title ILIKE $1 OR artist ILIKE $1 OR category ILIKE $1
+        `, [`%${searchQuery}%`]);
+
+        res.render('partials/searchResult.ejs', { results: results.rows });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
+    }
+});
+
+
 // ------------------------------------------------------------------------------
 
 
@@ -291,7 +309,7 @@ app.get("/delete/:id", async (req, res) => {
 
         }
         else {
-            res.redirect('admin/adminForm');
+            res.render('admin/adminForm');
         }
         // res.json(songToDel, "delete successs")
     } catch (error) {
@@ -367,6 +385,15 @@ app.post("/admin/update-song/:id", upload.single('song'), async (req, res) => {
         res.status(500).send("An error occurred while updating the song");
     }
 });
+
+
+app.get("/admin/view-songs",async(req,res)=>{
+    let result = await db.query("SELECT *  FROM songs");
+    const songs = result.rows;
+    res.render("admin/viewAllSong.ejs", {songs});
+})
+
+
 // *******************************************************************************
 
 

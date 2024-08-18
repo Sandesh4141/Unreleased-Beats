@@ -51,3 +51,10 @@ todo: Resolve the array problem while adding songs to album : resolved
                     </body>
                 </html>
 
+
+add search song functionality
+add admin navbar in admin side
+
+
+<!-- primary font -->
+ font-family: "JetBrains Mono", monospace;
