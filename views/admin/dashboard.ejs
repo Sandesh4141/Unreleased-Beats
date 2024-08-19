@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -131,10 +132,11 @@
         }
     </style>
 </head>
+
 <body>
     <div class="sidebar">
         <a href="/admin/dashboard" class="active">Dashboard</a>
-        
+
         <div class="dropdown">
             <button class="dropdown-btn">Manage Songs</button>
             <div class="dropdown-content">
@@ -179,22 +181,30 @@
         <div class="dashboard-section">
             <div class="card">
                 <h3>Total Songs</h3>
-                <p><%= totalSongs %></p>
+                <p>
+                    <%= totalSongs %>
+                </p>
                 <button onclick="window.location.href='/admin/view-songs'">View All Songs</button>
             </div>
             <div class="card">
                 <h3>Total Albums</h3>
-                <p><%= totalAlbums %></p>
+                <p>
+                    <%= totalAlbums %>
+                </p>
                 <button onclick="window.location.href='/admin/view-album'">View All Albums</button>
             </div>
             <div class="card">
                 <h3>Total Pending Approvals</h3>
-                <p><%= pendingApprovals %></p>
+                <p>
+                    <%= pendingApprovals %>
+                </p>
                 <button onclick="window.location.href='/admin/view-pending-approvals'">View Pending Approvals</button>
             </div>
             <div class="card">
                 <h3>Total Inquiries/Questions</h3>
-                <p><%= totalQuestions %></p>
+                <p>
+                    <%= totalQuestions %>
+                </p>
                 <button onclick="window.location.href='/admin/view-pending-questions'">View Pending Questions</button>
             </div>
         </div>
@@ -210,4 +220,5 @@
         });
     </script>
 </body>
+
 </html>

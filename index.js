@@ -645,8 +645,125 @@ app.get('/admin/view-promotions', async (req, res) => {
 
  })
 
+//  ------------ approving promotions -----------------
+
+
+app.get('/admin/approve-promotion/:id', async (req, res) => {
+    const promotionID = req.params.id;
+
+    try {
+        // Update the promotion status to 'approved'
+        const updateQuery = 'UPDATE promotions SET status = $1 WHERE id = $2';
+        const updateValues = ['approved', promotionID];
+        await db.query(updateQuery, updateValues);
+
+        // Fetch the promotion details
+        const selectQuery = 'SELECT * FROM promotions WHERE id = $1';
+        const selectResult = await db.query(selectQuery, [promotionID]);
+        
+        if (selectResult.rows.length === 0) {
+            return res.status(404).send('Promotion not found');
+        }
+
+        const promotedSong = selectResult.rows[0];
+        console.log(promotedSong);
+
+        // Insert the song into the songs table
+        const insertSongQuery = `
+            INSERT INTO songs (song_title, artist, category, file_path)
+            VALUES ($1, $2, $3, $4)
+        `;
+        const insertSongValues = [
+            promotedSong.song_title, // Adjust based on actual field names
+            promotedSong.artist_name,
+            // Ensure this field is correct
+            promotedSong.category,
+            promotedSong.file_path    // Ensure this field is correct
+        ];
+        await db.query(insertSongQuery, insertSongValues);
+
+        // Redirect with a success message
+        res.send(`
+            <html>
+                <body>
+                    <script>
+                        alert("Promotion approved and song added successfully.");
+                        window.location.href = "/admin/view-promotions"; // Redirect to the promotions management page
+                    </script>
+                </body>
+            </html>
+        `);
+    } catch (error) {
+        console.error('Error approving promotion:', error);
+        res.status(500).send('Server error');
+    }
+});
+
+
+app.get('/admin/reject-promotion/:id', async (req, res) => {
+    const promotionID = req.params.id;
+
+    try {
+        // Update the promotion status to 'rejected'
+        const updateQuery = 'UPDATE promotions SET status = $1 WHERE id = $2';
+        const updateValues = ['rejected', promotionID];
+        await db.query(updateQuery, updateValues);
+
+        // Redirect with a success message
+        res.send(`
+            <html>
+                <body>
+                    <script>
+                        alert("Promotion rejected successfully.");
+                        window.location.href = "/admin/view-promotions"; // Redirect to the promotions management page
+                    </script>
+                </body>
+            </html>
+        `);
+    } catch (error) {
+        console.error('Error rejecting promotion:', error);
+        res.status(500).send('Server error');
+    }
+});
+
+
+
+
+// handle pending promotions
+
+app.get('/admin/pending-promotions', async (req, res) => {
+    try {
+        // Query to get all promotions with 'pending' status
+        const query = 'SELECT * FROM promotions WHERE status = $1';
+        const values = ['pending'];
+        const result = await db.query(query, values);
+
+        // Pass the result to the EJS template
+        res.render('admin/pendingPromotions.ejs', { promotions: result.rows });
+    } catch (error) {
+        console.error('Error fetching pending promotions:', error);
+        res.status(500).send('Server error');
+    }
+});
+
+app.get('/admin/rejected-promotions', async (req, res) => {
+    try {
+        // Query to get all promotions with 'pending' status
+        const query = 'SELECT * FROM promotions WHERE status = $1';
+        const values = ['rejected'];
+        const result = await db.query(query, values);
+
+        // Pass the result to the EJS template
+        res.render('admin/rejectedPromotions.ejs', { promotions: result.rows });
+    } catch (error) {
+        console.error('Error fetching pending promotions:', error);
+        res.status(500).send('Server error');
+    }
+});
+
 // ####################################################################################
 // get album request for user
+
 
 
 app.get("/user/get-albums", async (req, res) => {

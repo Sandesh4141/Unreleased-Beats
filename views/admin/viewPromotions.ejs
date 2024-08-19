@@ -63,6 +63,18 @@
             color: #333;
         }
 
+        .status-approved {
+            background-color: #d0f0c0; /* Light Green for Approved */
+        }
+
+        .status-pending {
+            background-color: #fff3e0; /* Light Orange for Pending */
+        }
+
+        .status-rejected {
+            background-color: #f8d7da; /* Light Red for Rejected */
+        }
+
         .btn {
             padding: 8px 16px;
             background-color: #00796b; /* Teal */
@@ -116,7 +128,7 @@
             </thead>
             <tbody>
                 <% promotions.forEach(promotion => { %>
-                <tr>
+                <tr class="<%= promotion.status === 'approved' ? 'status-approved' : promotion.status === 'pending' ? 'status-pending' : 'status-rejected' %>">
                     <td><%= promotion.id %></td>
                     <td><%= promotion.song_title %></td>
                     <td><%= promotion.artist_name %></td>
@@ -136,8 +148,5 @@
         </table>
     </div>
 
-    <script>
-        // Script to handle any client-side interactivity if needed
-    </script>
 </body>
 </html>

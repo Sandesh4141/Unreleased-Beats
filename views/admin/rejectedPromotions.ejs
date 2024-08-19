@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rejected Promotions</title>
+    <link rel="stylesheet" href="/styles/admin/dashboard.css">
+    <style>
+        body {
+            font-family: "JetBrains Mono", monospace;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9; /* Light Gray Background */
+        }
+
+        .main-content {
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 1200px;
+            margin: 20px auto;
+        }
+
+        h1 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #00796b; /* Teal Accent */
+            padding-bottom: 10px;
+        }
+
+        .promotion-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        .promotion-table th, .promotion-table td {
+            padding: 12px;
+            border: 1px solid #e0e0e0; /* Light Border Color */
+            text-align: left;
+        }
+
+        .promotion-table th {
+            background-color: #00796b; /* Teal */
+            color: white;
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .promotion-table tr:nth-child(even) {
+            background-color: #fafafa; /* Very Light Gray */
+        }
+
+        .promotion-table tr:hover {
+            background-color: #e8f5e9; /* Light Green */
+        }
+
+        .promotion-table td {
+            font-size: 14px;
+            color: #333;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            background-color: #00796b; /* Teal */
+            color: white;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 14px;
+            transition: background-color 0.3s, transform 0.2s;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn:hover {
+            background-color: #004d40; /* Darker Teal */
+            transform: scale(1.05);
+        }
+
+        .btn-action {
+            margin-right: 10px;
+        }
+
+        .btn-container {
+            display: flex;
+            gap: 10px;
+        }
+
+        .audio-player {
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        .no-promotions {
+            padding: 20px;
+            background-color: #ffebee; /* Light Red */
+            color: #d32f2f; /* Red */
+            border: 1px solid #d32f2f;
+            border-radius: 4px;
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-content">
+        <h1>Rejected Promotions</h1>
+
+        <% if (promotions.length === 0) { %>
+        <div class="no-promotions">
+            <p>No pending promotions available at the moment.</p>
+        </div>
+        <% } else { %>
+        <table class="promotion-table">
+            <thead>
+                <tr>
+                    <th>Promotion ID</th>
+                    <th>Song Title</th>
+                    <th>Song Artist</th>
+                    <th>Song Description</th>
+                    <th>Date Requested</th>
+                    <th>Song Category</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% promotions.forEach(promotion => { %>
+                <tr>
+                    <td><%= promotion.id %></td>
+                    <td><%= promotion.song_title %></td>
+                    <td><%= promotion.artist_name %></td>
+                    <td><%= promotion.description %></td>
+                    <td><%= new Date(promotion.date_requested).toLocaleDateString() %></td>
+                    <td><%= promotion.category %></td>
+                    <td><%= promotion.status %></td>
+                    <td class="btn-container">
+                        <a href="/admin/play-promotion/<%= promotion.id %>" class="btn btn-action">Play</a>
+                        <a href="/admin/approve-promotion/<%= promotion.id %>" class="btn btn-action">Approve</a>
+                        <a href="/admin/reject-promotion/<%= promotion.id %>" class="btn btn-action">Reject</a>
+                    </td>
+                </tr>
+                <% }) %>
+            </tbody>
+        </table>
+        <% } %>
+    </div>
+</body>
+</html>
