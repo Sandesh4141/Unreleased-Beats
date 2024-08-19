@@ -1,0 +1,57 @@
+
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'JetBrains Mono', monospace;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(135deg, #007bff, #00c6ff);
+    color: #ffffff;
+  }
+  
+  .thankyou-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+  }
+  
+  .thankyou-content h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+  }
+  
+  .thankyou-content p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+  }
+  
+  .back-home-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    color: #ffffff;
+    background-color: #007bff;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .back-home-btn:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+  }
+  
+  .back-home-btn:active {
+    background-color: #003f7f;
+    transform: translateY(0);
+  }
+  

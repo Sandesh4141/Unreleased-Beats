@@ -58,3 +58,10 @@ add admin navbar in admin side
 
 <!-- primary font -->
  font-family: "JetBrains Mono", monospace;
+
+
+ -
+- add pagination to home page
+- add albums section in navbar/header
+- handle promotions
+- change css for audio controls

@@ -81,6 +81,11 @@ app.get("/categories/:category", async (req, res) => {
 
 //------------------------------------------------------------------------
 
+
+
+
+
+
 // -------------------- Login & Logout Section -----------------------------
 app.get("/adminLogin", (req, res) => {
     res.render("admin/adminForm.ejs");
@@ -217,8 +222,8 @@ app.get('/admin/dashboard', async (req, res) => {
     totalQuestions = (await resultQuestions).rowCount;
 
     //  total albums
-    
-    let albums =  "SELECT * FROM albums";
+
+    let albums = "SELECT * FROM albums";
     let resAlubms = db.query(albums);
     let totalAlbums = (await resAlubms).rowCount;
 
@@ -387,10 +392,10 @@ app.post("/admin/update-song/:id", upload.single('song'), async (req, res) => {
 });
 
 
-app.get("/admin/view-songs",async(req,res)=>{
+app.get("/admin/view-songs", async (req, res) => {
     let result = await db.query("SELECT *  FROM songs");
     const songs = result.rows;
-    res.render("admin/viewAllSong.ejs", {songs});
+    res.render("admin/viewAllSong.ejs", { songs });
 })
 
 
@@ -437,12 +442,12 @@ app.post("/admin/add-album", async (req, res) => {
 
 // route for handle /admin/delete-album
 
-app.get("/admin/delete-album", async(req,res)=>{
+app.get("/admin/delete-album", async (req, res) => {
 
     let result = await db.query("SELECT * FROM albums");
     let allAlbums = result.rows;
 
-    res.render('admin/deleteAlbum.ejs', {allAlbums});
+    res.render('admin/deleteAlbum.ejs', { allAlbums });
     console.log(allAlbums);
 })
 // /admin/deleteAlbum
@@ -475,26 +480,26 @@ app.get("/admin/deleteAlbum/:id", async (req, res) => {
 
 // handling -  /admin/edit-album
 
-app.get("/admin/edit-album",async (req,res)=>{
+app.get("/admin/edit-album", async (req, res) => {
     let result = await db.query("SELECT * FROM albums");
     let allAlbums = result.rows;
 
-    res.render("admin/editAlbum.ejs", {allAlbums});
+    res.render("admin/editAlbum.ejs", { allAlbums });
 
 })
 
-app.get("/admin/edit-album/:id", async(req,res)=>{
+app.get("/admin/edit-album/:id", async (req, res) => {
     let editID = req.params.id;
     let result = db.query("SELECT * FROM albums WHERE album_id=$1", [editID]);
     let album = (await result).rows[0];
     // console.log(album.title);
-    res.render("admin/albumEditForm.ejs", {album});
+    res.render("admin/albumEditForm.ejs", { album });
 })
 
 
 // /admin/submit-edit-album/5
 
-app.post("/admin/submit-edit-album/:id", async(req,res)=>{
+app.post("/admin/submit-edit-album/:id", async (req, res) => {
     let id = req.params.album_id;
     let title = req.body.title;
     let artist = req.body.artist;
@@ -529,7 +534,7 @@ app.post("/admin/submit-edit-album/:id", async(req,res)=>{
 // add song to album - 
 app.get('/admin/album/:albumId/add-song', async (req, res) => {
     const { albumId } = req.params;
-    const album = await db.query("SELECT * FROM albums WHERE album_id = $1",[albumId]);
+    const album = await db.query("SELECT * FROM albums WHERE album_id = $1", [albumId]);
     const album_name = album.rows[0].title;
     const result = await db.query('SELECT * FROM songs WHERE album_id IS NULL '); // Songs not in any album
 
@@ -544,13 +549,13 @@ app.post('/admin/album/:albumId/add-songs', async (req, res) => {
     let songIds = req.body['songIds[]'];
     // console.log(req.body['songIds[]']);
     // console.log(songIds);
-   
+
     try {
         // Add each selected song to the album
         for (const songId of songIds) {
             await db.query('INSERT INTO album_songs (album_id, song_id) VALUES ($1, $2) ON CONFLICT (album_id, song_id) DO NOTHING', [albumId, songId]);
         }
-        
+
         // Redirect to the album edit page
         // res.redirect('/admin/edit-album/' + albumId);
         res.send(`
@@ -567,26 +572,120 @@ app.post('/admin/album/:albumId/add-songs', async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 
-  
+
 });
 
-// ####################################################################################
 
-//   GET /admin/view-album
-app.get("/admin/view-album", async (req,res)=>{
+// ------------------ user song promotion --------------------------------
+app.get("/user/song-promotion", (req,res)=>{
+    res.render('user/song-promotionForm.ejs');
+})
+
+app.post("/user/song-promotion/submit",upload.single("songFile"), async(req,res)=>{
+    const songTitle = req.body.songTitle;
+    const artistName = req.body.artistName;
+    const category = req.body.category;
+    const releaseDate = req.body.releaseDate;
+    const description = req.body.description;
+
+    const songFile = req.file.path; // file path after uploading
+    await db.query('INSERT INTO promotions (song_title, artist_name, category, release_date, file_path, description, status) VALUES ($1, $2, $3, $4, $5, $6, $7)', 
+        [songTitle, artistName, category, releaseDate, songFile, description, 'pending']);
+
+        res.render('user/thanks.ejs');
+})
+// ----------------admin view promotion ------------------------------
+app.get('/admin/view-promotions', async (req, res) => {
+    try {
+        // Query to get promotions
+        const result = await db.query('SELECT * FROM promotions'); // Adjust table and column names as needed
+
+        // Format date_requested if it's stored as a string
+        const promotions = result.rows.map(promotion => {
+            return {
+                ...promotion,
+                date_requested: new Date(promotion.release_date).toDateString() // Format date
+            };
+        });
+
+
+        // console.log(promotions[0].file_path);
+        res.render('admin/viewPromotions', { promotions });
+    } catch (err) {
+        console.error('Error fetching promotions:', err);
+        res.status(500).send('Server Error');
+    }
+});
+
+
+// play the promotion song
+ app.get("/admin/play-promotion/:id", async(req,res)=>{
+    let promoSong = req.params.id;
+    try {
+        const result = await db.query('SELECT * FROM promotions WHERE id = $1', [promoSong]);
+        if (result.rows.length > 0) {
+            const songFilePath = result.rows[0].file_path;
+            const fullFilePath = path.join(__dirname, songFilePath);
+
+            // Check if file exists
+            if (fs.existsSync(fullFilePath)) {
+                res.setHeader('Content-Type', 'audio/mpeg');
+                const readStream = fs.createReadStream(fullFilePath);
+                readStream.pipe(res);
+            } else {
+                res.status(404).send('File not found');
+            }
+        } else {
+            res.status(404).send('Song not found');
+        }
+    } catch (err) {
+        console.error('Error fetching song:', err);
+        res.status(500).send('Server error');
+    }
+
+ })
+
+// ####################################################################################
+// get album request for user
+
+
+app.get("/user/get-albums", async (req, res) => {
     let result = await db.query("SELECT * FROM albums");
     let allAlbums = result.rows;
-    
-    res.render("admin/viewAllAlbum.ejs", {allAlbums});
+
+    // Format the release_date for each album
+    allAlbums = allAlbums.map(album => {
+        const date = new Date(album.release_date);
+        album.formattedDate = date.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',  // 'short' for abbreviated month names
+            day: 'numeric',
+        });
+        return album;
+    });
+
+    res.render("user/viewAlbum.ejs", { allAlbums });
+});
+
+
+
+//   GET /admin/view-album
+
+app.get("/admin/view-album", async (req, res) => {
+    let result = await db.query("SELECT * FROM albums");
+    let allAlbums = result.rows;
+
+    res.render("admin/viewAllAlbum.ejs", { allAlbums });
 
 })
 
+
 //  view specific album with all songs in it
 // GET /admin/view-album/15
-app.get("/admin/albums/viewAlbum/:id",async (req,res)=>{
+app.get("/admin/albums/viewAlbum/:id", async (req, res) => {
     console.log(req.params.id);
     let albumID = req.params.id;
-   try {
+    try {
         const albumResult = await db.query("SELECT * FROM albums WHERE album_id = $1", [albumID]);
         const album = albumResult.rows[0];
 
@@ -607,7 +706,7 @@ app.get("/admin/albums/viewAlbum/:id",async (req,res)=>{
 
 // delete song from album 
 // GET /admin/album/15/remove-song
-app.get("/admin/album/:id/remove-song/", async(req,res)=>{
+app.get("/admin/album/:id/remove-song/", async (req, res) => {
     let albumID = req.params.id;
     try {
         const albumResult = await db.query("SELECT * FROM albums WHERE album_id = $1", [albumID]);
@@ -628,7 +727,7 @@ app.get("/admin/album/:id/remove-song/", async(req,res)=>{
 
 })
 
-app.get("/admin/album/:albumID/removeSong/:songID", async(req,res)=>{
+app.get("/admin/album/:albumID/removeSong/:songID", async (req, res) => {
     const { albumID, songID } = req.params;
     try {
         // Assuming you have a junction table like album_songs
@@ -662,7 +761,7 @@ app.get("/admin/album/:albumID/removeSong/:songID", async(req,res)=>{
         console.error("Error removing song from album:", error);
         req.session.error = "An error occurred while removing the song from the album.";
         res.redirect(`/admin/album/${albumID}/edit`);
-    } 
+    }
 
 })
 

@@ -52,7 +52,7 @@ header {
 
 .nav-links li a:hover,
 .nav-links li a:focus {
-    background-color: #268cc3; /* Subtle blue highlight */
+    background-color: #00796b; /* Subtle blue highlight */
     color: #fff;
     outline: none;
 }
@@ -102,12 +102,12 @@ header {
 }
 
 .dropdown-content a:hover {
-    background-color: #0f7fa8; /* Highlight on hover */
+    background-color: #00796b; /* Highlight on hover */
     color: #fff;
 }
 
 .dropdown:hover .dropbtn {
-    background-color: #238fc2; /* Darker blue for active dropdown button */
+    background-color: #00796b; /* Darker blue for active dropdown button */
 }
 
 /* Hamburger Menu */
