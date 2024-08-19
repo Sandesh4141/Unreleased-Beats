@@ -227,6 +227,10 @@ app.get('/admin/dashboard', async (req, res) => {
     let resAlubms = db.query(albums);
     let totalAlbums = (await resAlubms).rowCount;
 
+    let promotions = "SELECT * FROM promotions";
+    let resPromotions = db.query(promotions);
+    pendingApprovals = (await resPromotions).rowCount;
+
     if (req.session.admin) {
         // console.log(totalSongs, totalAlbums, pendingApprovals)
         res.render('admin/dashboard', { totalSongs, totalAlbums, pendingApprovals, totalQuestions });
