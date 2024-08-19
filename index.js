@@ -730,6 +730,20 @@ app.get('/admin/reject-promotion/:id', async (req, res) => {
 
 
 // handle pending promotions
+app.get('/admin/approved-promotions', async (req, res) => {
+    try {
+        // Query to get all promotions with 'pending' status
+        const query = 'SELECT * FROM promotions WHERE status = $1';
+        const values = ['approved'];
+        const result = await db.query(query, values);
+
+        res.render('admin/approvedPromotions.ejs', { promotions: result.rows });
+    } catch (error) {
+        console.error('Error fetching pending promotions:', error);
+        res.status(500).send('Server error');
+    }
+});
+
 
 app.get('/admin/pending-promotions', async (req, res) => {
     try {
