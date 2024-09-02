@@ -53,13 +53,32 @@ app.use(bodyParser.urlencoded({ extended: 'true' }));
 
 
 // ********************* Home Route ***************************************
-app.get("/", async (req, res) => {
-    const query = "SELECT * FROM songs";
-    const result = await db.query(query);
-    // console.log(result.rows);
-    let allSongs = result.rows;
-    res.render("home", { allSongs });
-})
+app.get('/', async (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const limit = 5; // Number of songs per page
+  const offset = (page - 1) * limit;
+
+  const songsQuery = `SELECT * FROM songs LIMIT $1 OFFSET $2`;
+  const totalSongsQuery = `SELECT COUNT(*) FROM songs`;
+
+  const albumsQuery = `SELECT * FROM albums`; // Assuming you want to display all albums
+
+  try {
+    const songs = await db.query(songsQuery, [limit, offset]);
+    const totalSongs = await db.query(totalSongsQuery);
+    const albums = await db.query(albumsQuery);
+
+    res.render('home', {
+      allSongs: songs.rows,
+      allAlbums: albums.rows,
+      currentPage: page,
+      totalPages: Math.ceil(totalSongs.rows[0].count / limit)
+    });
+  } catch (error) {
+    console.error(error);
+    res.send("Error occurred");
+  }
+});
 
 //------------------------- categories section ------------------------
 
@@ -602,7 +621,7 @@ app.post("/user/song-promotion/submit",upload.single("songFile"), async(req,res)
 app.get('/admin/view-promotions', async (req, res) => {
     try {
         // Query to get promotions
-        const result = await db.query('SELECT * FROM promotions'); // Adjust table and column names as needed
+        const result = await db.query('SELECT * FROM promotions ORDER BY release_date DESC'); // Adjust table and column names as needed
 
         // Format date_requested if it's stored as a string
         const promotions = result.rows.map(promotion => {
@@ -751,13 +770,15 @@ app.get('/admin/approved-promotions', async (req, res) => {
 
 app.get('/admin/pending-promotions', async (req, res) => {
     try {
+
+        let index = 0;
         // Query to get all promotions with 'pending' status
         const query = 'SELECT * FROM promotions WHERE status = $1';
         const values = ['pending'];
         const result = await db.query(query, values);
 
         // Pass the result to the EJS template
-        res.render('admin/pendingPromotions.ejs', { promotions: result.rows });
+        res.render('admin/pendingPromotions.ejs', { promotions: result.rows, index });
     } catch (error) {
         console.error('Error fetching pending promotions:', error);
         res.status(500).send('Server error');
@@ -767,7 +788,7 @@ app.get('/admin/pending-promotions', async (req, res) => {
 app.get('/admin/rejected-promotions', async (req, res) => {
     try {
         // Query to get all promotions with 'pending' status
-        const query = 'SELECT * FROM promotions WHERE status = $1';
+        const query = 'SELECT * FROM promotions WHERE status = $1 ORDER BY id DESC';
         const values = ['rejected'];
         const result = await db.query(query, values);
 
@@ -940,6 +961,14 @@ app.post('/submit-contact', async (req, res) => {
 
 })
 
+
+app.get("/admin/view-pending-questions", async(req,res)=>{
+    let questionsQuery = "SELECT * FROM contact_us ORDER BY id DESC";
+    let questions = await db.query(questionsQuery);
+    // console.log(questions.rows);
+    res.render("admin/viewAllcontactUs.ejs", {questions});
+
+})
 // --------------------------------------------------------------
 
 // ############################ Promotions #############################################
@@ -948,6 +977,30 @@ app.get("/promotion", (req, res) => {
     res.render("promotions/promotionForm.ejs");
 
 })
+
+// ###########################user view album ###################################
+app.get("/user/albums/viewAlbum/:id", async (req, res) => {
+    console.log(req.params.id);
+    let albumID = req.params.id;
+    try {
+        const albumResult = await db.query("SELECT * FROM albums WHERE album_id = $1", [albumID]);
+        const album = albumResult.rows[0];
+
+        if (!album) {
+            return res.status(404).send('Album not found');
+        }
+
+        const songsResult = await db.query("SELECT * FROM songs WHERE id IN (SELECT song_id FROM album_songs WHERE album_id = $1)", [albumID]);
+        const songs = songsResult.rows;
+
+        res.render("admin/viewAlbum.ejs", { album, songs });
+    } catch (error) {
+        console.error('Error fetching album details:', error);
+        res.status(500).send('Internal Server Error');
+    }
+
+})
+
 
 // ####################################################################################
 

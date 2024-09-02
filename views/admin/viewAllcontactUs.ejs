@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View All Contacts</title>
+    <link rel="stylesheet" href="/styles/admin/dashboard.css">
+    <style>
+        body {
+            font-family: "JetBrains Mono", monospace;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9; /* Light Gray Background */
+        }
+
+        .main-content {
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 1200px;
+            margin: 20px auto;
+        }
+
+        h1 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #00796b; /* Teal Accent */
+            padding-bottom: 10px;
+        }
+
+        .questions-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        .questions-table th, .questions-table td {
+            padding: 12px;
+            border: 1px solid #e0e0e0; /* Light Border Color */
+            text-align: left;
+        }
+
+        .questions-table th {
+            background-color: #00796b; /* Teal */
+            color: white;
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .questions-table tr:nth-child(even) {
+            background-color: #fafafa; /* Very Light Gray */
+        }
+
+        .questions-table tr:hover {
+            background-color: #e8f5e9; /* Light Green */
+        }
+
+        .questions-table td {
+            font-size: 14px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-content">
+        <h1>View All Contacts</h1>
+
+        <table class="questions-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Message</th>
+                    <th>Date Submitted</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% questions.rows.forEach(question => { %>
+                <tr>
+                    <td><%= question.id %></td>
+                    <td><%= question.name %></td>
+                    <td><%= question.email %></td>
+                    <td><%= question.message %></td>
+                    <td><%= new Date(question.submitted_at).toLocaleDateString() %></td>
+                </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>

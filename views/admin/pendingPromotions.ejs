@@ -108,6 +108,7 @@
 </head>
 <body>
     <div class="main-content">
+
         <h1>Pending Promotions</h1>
 
         <% if (promotions.length === 0) { %>
@@ -118,7 +119,7 @@
         <table class="promotion-table">
             <thead>
                 <tr>
-                    <th>Promotion ID</th>
+                    <th>Index</th>
                     <th>Song Title</th>
                     <th>Song Artist</th>
                     <th>Song Description</th>
@@ -129,13 +130,14 @@
                 </tr>
             </thead>
             <tbody>
+                <% let index = 1; %>
                 <% promotions.forEach(promotion => { %>
                 <tr>
-                    <td><%= promotion.id %></td>
+                    <td><%= index++ %></td>
                     <td><%= promotion.song_title %></td>
                     <td><%= promotion.artist_name %></td>
                     <td><%= promotion.description %></td>
-                    <td><%= new Date(promotion.date_requested).toLocaleDateString() %></td>
+                    <td><%= new Date(promotion.release_date).toLocaleDateString() %></td>
                     <td><%= promotion.category %></td>
                     <td><%= promotion.status %></td>
                     <td class="btn-container">
@@ -144,7 +146,7 @@
                         <a href="/admin/reject-promotion/<%= promotion.id %>" class="btn btn-action">Reject</a>
                     </td>
                 </tr>
-                <% }) %>
+                <%}) %>
             </tbody>
         </table>
         <% } %>

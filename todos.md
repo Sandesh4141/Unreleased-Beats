@@ -40,16 +40,16 @@ WHERE song_title = 'Song Title';
 
 todo: Resolve the array problem while adding songs to album : resolved
 
+<html>
+    <body>
+        <script>
+            alert("Album Deleted Successfully....");
+                        window.location.href = "/admin/dashboard"; // Redirect to the home page
+        </script>
+    </body>
+</html>
 
-
-                <html>
-                    <body>
-                        <script>
-                            alert("Album Deleted Successfully....");
-                            window.location.href = "/admin/dashboard"; // Redirect to the home page
-                        </script>
-                    </body>
-                </html>
+                
 
 
 add search song functionality
@@ -61,7 +61,21 @@ add admin navbar in admin side
 
 
  -
-- add pagination to home page
-- add albums section in navbar/header
-- handle promotions
-- change css for audio controls
+- add pagination to home page 
+- add albums section in navbar/header 
+- handle promotions : handled
+- change css for audio controls 
+
+- 
+sort promotions according to newest first
+handle all questions
+
+
+---
+
+Future Enhancement
+- Add Charts for anaylitics for admin using library called charts.js
+- Add Pagination to Songs and albums
+- Add manual categories for admin (Admin can add categoris)
+- Enhance UI
+- Adding Paid Albums/Songs using USER LOGIN/Registering

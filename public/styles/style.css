@@ -1,50 +1,187 @@
-/* // <uniquifier>: Use a unique and descriptive class name
-// <weight>: Use a value from 100 to 800 */
-
-.jb-mono{
-  font-family: "JetBrains Mono", monospace;
-  font-optical-sizing: auto;
-  font-weight: 200;
-  font-size: 14px;
-  font-style: normal;
+/* Reset some default styles */
+body,
+h2,
+h3,
+p {
+  margin: 0;
+  padding: 0;
 }
-.songs-container {
+
+/* Set a default font, background color, and basic styling */
+body {
+  font-family: 'Inter', sans-serif;
+  /* Modern font choice */
+  background-color: #eaeaea;
+  /* Light gray background */
+  color: #333;
+}
+
+/* Container for songs and albums section */
+section {
+  margin: 20px auto;
+  max-width: 1000px;
+  /* Reduced max width for the section */
+  padding: 15px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Heading styles */
+h2 {
+  text-align: center;
+  margin-bottom: 15px;
+  font-size: 1.8em;
+  /* Slightly smaller heading size */
+  color: #555;
+  /* Darker gray for headings */
+  border-bottom: 2px solid #28a745;
+  /* Green underline effect */
+  padding-bottom: 8px;
+}
+
+.song-heading {
+  margin-top: 100px;
+}
+
+/* Flexbox container for songs and albums */
+.songs-container,
+.albums-container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  margin-top: 10px;
-  overflow-wrap: anywhere;
-
+  gap: 15px;
+  /* Reduced space between cards */
 }
 
-.song-card {
-  width: 200px;
-  margin: 10px ;
+/* Individual song and album card styles */
+.song-card,
+.album-card {
+  background: #fff;
   border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 10px;
-  text-align: center;
-  background-color: #f5f5f5;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease-in-out;
+  /* Lighter border */
+  border-radius: 6px;
+  padding: 12px;
+  width: calc(30% - 15px);
+  /* Three cards per row */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  /* Slightly lighter shadow */
+  transition: transform 0.2s, box-shadow 0.2s;
+  position: relative;
+  overflow: hidden;
 }
 
-.song-card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+.song-card:hover,
+.album-card:hover {
+  transform: translateY(-3px);
+  /* Smaller lift effect on hover */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+  /* Lighter shadow on hover */
 }
 
-.song-card img {
+/* Image styles */
+.song-card img,
+.album-card img {
   max-width: 100%;
   height: auto;
+  border-radius: 6px;
+  object-fit: cover;
 }
+
+/* Text styles for song and album titles */
+.song-card h3,
+.album-card h3 {
+  font-size: 1.1em;
+  /* Smaller title size */
+  margin: 8px 0 4px;
+  color: #28a745;
+  /* Green color for titles */
+}
+
+/* Additional paragraph styles */
+.song-card p,
+.album-card p {
+  font-size: 0.85em;
+  /* Smaller font size for details */
+  color: #777;
+  /* Lighter gray color for details */
+  margin: 4px 0;
+}
+
+/* Button styles */
 .button {
-  background-color: rgb(209, 164, 28);
-  color: white;
-  padding: 10px 20px;
-  text-align: center;
-  text-decoration: none;
   display: inline-block;
-  border-radius: 5px;
-  margin: 10px;
+  padding: 8px 12px;
+  margin-top: 8px;
+  background-color: #28a745;
+  /* Green primary color */
+  color: #fff;
+  text-decoration: none;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s, transform 0.2s, box-shadow 0.2s;
+  font-weight: bold;
+}
+
+.button:hover {
+  background-color: #218838;
+  /* Darker green on hover */
+  transform: scale(1.03);
+  /* Slightly enlarge the button */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* Pagination styles */
+.pagination {
+  margin-top: 15px;
+  text-align: center;
+}
+
+.pagination a {
+  margin: 0 4px;
+  padding: 6px 10px;
+  background-color: #f4f4f4;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  text-decoration: none;
+  color: #333;
+  transition: background-color 0.3s;
+}
+
+.pagination a.active {
+  background-color: #28a745;
+  /* Green active page highlight */
+  color: #fff;
+}
+
+.pagination a:hover {
+  background-color: #ddd;
+  /* Light gray on hover */
+}
+
+/* Responsive styles */
+@media (max-width: 900px) {
+
+  .song-card,
+  .album-card {
+    width: calc(40% - 15px);
+    /* Two cards per row on medium screens */
+  }
+}
+
+@media (max-width: 600px) {
+
+  .song-card,
+  .album-card {
+    width: calc(50% - 15px);
+    /* Two cards per row on smaller screens */
+  }
+}
+
+@media (max-width: 400px) {
+
+  .song-card,
+  .album-card {
+    width: 100%;
+    /* One card per row on smallest screens */
+  }
 }

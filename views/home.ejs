@@ -4,42 +4,73 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Songs</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
-    rel="stylesheet">
+  <title>Songs and Albums</title>
   <link rel="stylesheet" href="styles/style.css">
 </head>
 
 <body class="jb-mono">
-  <%-include("partials/header.ejs")%>
-  <%-include("partials/songSearch.ejs")%>
-  
+  <%- include("partials/header.ejs") %>
 
-  <div class="songs-container">
-    <% if (allSongs && allSongs.length > 0) { %>
-      <% allSongs.forEach(function(song) { %>
-
-        <div class="song-card">
-          <img src="/images/thumbnail.png" alt="logo">
-
-          <h3><%= song.song_title %></h3>
-          <p><%= song.artist %></p>
-          <p><%= song.category %></p>
-          <p><%= song.genre %></p>
-          <a  href="/play/<%= song.id %>" class="button">Play Song</a>
-          <a href="/download/<%= song.id %>" class="button">Download Song</a>
+  <section>
+    <h2 class="song-heading">Songs</h2>
+    <div class="songs-container">
+      <% if (allSongs && allSongs.length > 0) { %>
+        <% allSongs.forEach(function(song) { %>
+          <div class="song-card">
+            <img src="/images/thumbnail.png" alt="logo">
+            <h3><%= song.song_title %></h3>
+            <p><%= song.artist %></p>
+            <p><%= song.category %></p>
+            <p><%= song.genre %></p>
+            <a href="/play/<%= song.id %>" class="button">Play Song</a>
+            <a href="/download/<%= song.id %>" class="button">Download Song</a>
           </div>
+        <% }); %>
+      <% } else { %>
+        <p>No songs found.</p>
+      <% } %>
+    </div>
 
-      <% }); %>
-    <% } else { %>
-      <p>No songs found.</p>
-    <% } %>
+    <div class="pagination">
+      <% for (let i = 1; i <= totalPages; i++) { %>
+        <a href="/?page=<%= i %>" class="<%= currentPage === i ? 'active' : '' %>"><%= i %></a>
+      <% } %>
+    </div>
+  </section>
+
+  <section>
+    <h2>Albums</h2>
+    <div class="albums-container">
+      <% if (allAlbums && allAlbums.length> 0) { %>
+          <% allAlbums.forEach(function(album) { %>
+
+              <div class="album-card">
+                  <img src="/images/thumbnail.png" alt="<%= album.title %> Cover">
+
+                  <h3>
+                      <%= album.title %>
+                  </h3>
+                  <p>
+                      <%= album.artist %>
+                  </p>
+                  <p>
+                      <%= album.release_date %>
+                  </p>
+                  <p>
+                      <%= album.category %>
+                  </p>
+
+                  <a href="/user/albums/viewAlbum/<%= album.album_id %>" class="button"> View Album</a>
+              </div>
+
+              <% }); %>
+                  <% } else { %>
+                      <p>No albums found.</p>
+                      <% } %>
   </div>
+  </section>
 
-  <%-include("partials/footer.ejs")%>
+  <%- include("partials/footer.ejs") %>
 </body>
 
 </html>

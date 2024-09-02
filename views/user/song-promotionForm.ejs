@@ -30,6 +30,10 @@ body {
   width: 100%;
   max-width: 500px;
 }
+.mandatory {
+    color: red; 
+    margin-left: -7px;
+}
 
 h2 {
   text-align: center;
@@ -134,8 +138,8 @@ textarea {
   .submit-btn {
     font-size: 1rem;
   }
+ 
 }
-
 </style>
 <body>
 
@@ -143,22 +147,22 @@ textarea {
     <h2>Promote Your Song</h2>
     <form action="/user/song-promotion/submit" method="POST" enctype="multipart/form-data">
       <div class="form-group">
-        <label for="songTitle">Song Title:</label>
+        <label for="songTitle">Song Title <span class="mandatory">*</span></label>
         <input type="text" id="songTitle" name="songTitle" required>
       </div>
 
       <div class="form-group">
-        <label for="artistName">Artist Name:</label>
+        <label for="artistName">Artist Name <span class="mandatory">*</span></label>
         <input type="text" id="artistName" name="artistName" required>
       </div>
 
       <div class="form-group">
-        <label for="albumName">Album Name:</label>
+        <label for="albumName">Album Name </label>
         <input type="text" id="albumName" name="albumName" readonly value="not-available ">
       </div>
 
       <div class="form-group">
-        <label for="category">Category:</label>
+        <label for="category">Category </label>
         <select id="category" name="category" required>
           <option value="edm">EDM</option>
           <option value="bollywood">Bollywood</option>
@@ -170,12 +174,12 @@ textarea {
       </div>
 
       <div class="form-group">
-        <label for="releaseDate">Release Date:</label>
-        <input type="date" id="releaseDate" name="releaseDate" required>
+        <label for="releaseDate"> Release Date <span class="mandatory">*</span></label>
+        <input type="date" id="releaseDate" name="releaseDate" value="<%= new Date().toISOString().split('T')[0] %>" readonly>
       </div>
 
       <div class="form-group">
-        <label for="songFile">Upload Song:</label>
+        <label for="songFile">Upload Song  <span class="mandatory">*</span></label>
         <input type="file" id="songFile" name="songFile" accept=".mp3" required>
       </div>
 
