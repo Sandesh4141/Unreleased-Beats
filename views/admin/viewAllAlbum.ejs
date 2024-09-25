@@ -7,9 +7,7 @@
     <title>View Album</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/styles/style.css">
 </head>
 
@@ -28,55 +26,57 @@
 
     .albums-container {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 20px;
-        width: 90%;
-        max-width: 1200px;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        width: 85%;
+        max-width: 1000px;
         margin: 20px auto;
         padding: 0 10px;
     }
 
     /* Album Card */
     .album-card {
+        width: fit-content;
         background-color: #fff;
         border-radius: 8px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        padding: 20px;
+        padding: 15px;
         text-align: center;
         transition: transform 0.2s, box-shadow 0.2s;
         display: flex;
         flex-direction: column;
         align-items: center;
+        max-width: 200px;
     }
 
     .album-card img {
         max-width: 100%;
         height: auto;
-        border-radius: 8px;
-        margin-bottom: 15px;
+        border-radius: 6px;
+        margin-bottom: 10px;
     }
 
     .album-card h3 {
-        font-size: 1.5rem;
-        margin: 10px 0;
+        font-size: 1.2rem;
+        margin: 8px 0;
         color: #333;
     }
 
     .album-card p {
-        margin: 5px 0;
+        margin: 4px 0;
         color: #666;
-        font-size: 1rem;
+        font-size: 0.9rem;
     }
 
     /* Buttons */
     .album-card .button {
         background-color: #ff4d4d;
         color: #fff;
-        padding: 10px 20px;
+        padding: 8px 15px;
         text-decoration: none;
         border-radius: 4px;
-        font-size: 1rem;
-        margin-top: 10px;
+        font-size: 0.9rem;
+        margin-top: 8px;
         transition: background-color 0.2s;
         display: inline-block;
     }
@@ -87,27 +87,27 @@
 
     /* Hover Effects */
     .album-card:hover {
-        transform: translateY(-5px);
+        transform: translateY(-3px);
         box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
     }
 
     /* Responsive Design */
     @media (max-width: 768px) {
         .album-card {
-            padding: 15px;
+            padding: 10px;
         }
 
         .album-card h3 {
-            font-size: 1.25rem;
+            font-size: 1rem;
         }
 
         .album-card p {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
         .album-card .button {
-            padding: 8px 16px;
-            font-size: 0.9rem;
+            padding: 6px 12px;
+            font-size: 0.8rem;
         }
     }
 </style>
