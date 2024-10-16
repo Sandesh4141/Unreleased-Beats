@@ -598,6 +598,10 @@ app.post('/admin/album/:albumId/add-songs', async (req, res) => {
 
 });
 
+app.get("/admin/settings", (req,res)=>{
+    res.send("Setting is under maintanance ");
+})
+
 
 // ------------------ user song promotion --------------------------------
 app.get("/user/song-promotion", (req,res)=>{
