@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>View Reports</title>
+    <link rel="stylesheet" href="/styles/admin/reports.css" />
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100..800&family=Montserrat:wght@100..900&display=swap" rel="stylesheet">
+
+    <style>
+        /* reports.css */
+        .main-content {
+          font-family: 'JetBrains Mono', monospace;
+            margin: 20px auto;
+            padding: 20px;
+            max-width: 1000px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .report-summary {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .report-summary h1 {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #ffffff;
+        }
+
+        table th, table td {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        table th {
+            background-color: #00796b;
+            color: #ffffff;
+            font-weight: bold;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        table tr:hover {
+            background-color: #e0f7fa;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 10px;
+            }
+
+            table th, table td {
+                font-size: 14px;
+                padding: 8px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-content">
+        <h1>Reports Summary</h1>
+        <div class="report-summary">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Total Songs</td>
+                        <td>
+                            <p>Added: <%= totalSongsAdded %></p>
+                            <p>Deleted: <%= totalSongDeleted %></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Promotions</td>
+                        <td>
+                            <p>Accepted: <%= totalApprovedPromotions %></p>
+                            <p>Pending: <%= totalPendingPromotions %></p>
+                            <p>Rejected: <%= totalRejectedPromotions %></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Albums</td>
+                        <td>
+                            <p>Created Albums: <%= totalAlbumCreated %></p>
+                            <p>Deleted: <%= totalAlbumDeleted %></p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
